@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>jQuery Ajax</title>
+    <!--Custom Fonts-->
+
+    <style>
+    
+    </style>
+  </head>
+  <body>
+  <div id="content">
+      
+  </div>
+   
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+           $.get('../js/cd_db.json', function(data,status){
+               console.log('status:', status);
+              // след успешно прочитане на данните, те са поставени в data
+               var $h1 = $('<h1></h1>');
+               //поставяме заглавието на каталога в х1
+               $h1.html(data.catalog);
+               $('#content').append($h1);
+               //за всеки категория в каталога ...
+               $.each( data.collection, function(index, elem){
+                   //заглавие на категорията
+                   var $title = $('<h2></h2>');
+                   $('#content').append($title);
+                   $title.html(elem.genre);
+                   //генерираме html за съдържанието на категорията
+                   var itmsOutput = '<ul>';
+                   $.each(elem.items , function(idx, item){
+                      itmsOutput += '<li><h3>' + item.title + '</h3>' + 
+                                     '<img src="../'+item.artwork+'" alt="'+item.title+'">' +
+                                    '<p>' + item.description + '</p></li>';
+                   });//for each item in items
+                   itmsOutput += '</ul>';
+                   $('#content').append(itmsOutput);
+               }); //for each element in collection
+           });//get cd database
+        });//on document ready
+    </script>
+  </body>
+</html>
